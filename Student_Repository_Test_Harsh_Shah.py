@@ -3,41 +3,64 @@ This is to test the function written in HW09
 @author: Harsh Shah
 """
 import unittest
-from HW09_Harsh_Shah import Repository
+from HW10_Harsh_Shah import Repository
 from typing import Dict , List
 
-
 class testFunctions(unittest.TestCase):
-    """ To implement different test cases"""
-    def test_student_pretty_table(self):
-        """This function is to test the student pretty table output"""
-        rep: Repository = Repository("/Users/harsh/OneDrive/Desktop/My Files/Assignment")
-        expected:Dict = {'10103': ['10103','Baldwin, C', ['CS 501', 'SSW 564', 'SSW 567' ,'SSW 687']],
-                    '10115': ['10115', 'Wyatt, X', ['CS 545', 'SSW 564', 'SSW 567', 'SSW 687']],
-                    '10172': ['10172', 'Forbes, I', ['SSW 555', 'SSW 567']],
-                    '10175': ['10175', 'Erickson, D', [ 'SSW 564', 'SSW 567', 'SSW 687']],
-                    '10183': ['10183', 'Chapman, O', ['SSW 689']],
-                    '11399': ['11399', 'Cordova, I', ['SSW 540']],
-                    '11461': ['11461', 'Wright, U', ['SYS 611', 'SYS 750', 'SYS 800']],
-                    '11658': ['11658', 'Kelly, P', ['SSW 540']],
-                    '11714': ['11714', 'Morton, A', ['SYS 611', 'SYS 645']],
-                    '11788': ['11788', 'Fuller, E', ['SSW 540']]}
-
-        expected1:Dict = {
-                    '10103': ['10103','Baldwin, C', ['CS 501', 'SSW 564', 'SSW 567' ,'SSW 687']],
-                    '10115': ['10115', 'Wyatt, X', ['CS 545', 'SSW 564', 'SSW 567', 'SSW 687']],
-                    '10172': ['10172', 'Forbes, I', ['SSW 555', 'SSW 567']],
-                    '10175': ['10175', 'Erickson, D', [ 'SSW 564', 'SSW 567', 'SSW 687']],
-                    '10183': ['10183', 'Chapman, O', ['SSW 689']],
-                    '11399': ['11399', 'Cordova, I', ['SSW 540']],
-                    '11461': ['11461', 'Wright, U', ['SYS 611', 'SYS 750', 'SYS 800']],
-                    '11658': ['11658', 'Kelly, P', ['SSW 540']],
-                    '11714': ['11714', 'Morton, A', ['SYS 611', 'SYS 645']],
-                    }
-        res:Dict = {cwid: student.student_info() for cwid , student in rep._students.items()}
-        self.assertEqual(res, expected)
-        self.assertNotEqual(res , expected1)
+    def test_major_pretty_table(self) -> None:
+        """testing major pretty table"""
+        rep:Repository = Repository("/Users/harsh/OneDrive/Desktop/My Files/Assignment")
+        expected = {
+            'SFEN': ['SFEN', {'SSW 540', 'SSW 555', 'SSW 564', 'SSW 567'} ,{'CS 501', 'CS 513', 'CS 545'}],
+            'SYEN': ['SYEN', {'SYS 612', 'SYS 671', 'SYS 800'}, {'SSW 540', 'SSW 565', 'SSW 810'}]
+        }
+        unexpected = {
+            'SFEN': ['SFEN', {'SSW 540', 'SSW 555', 'SSW 564', 'SSW 567'} ,{'CS 501', 'CS 513', 'CS 545'}],
+            'SYEN': ['SYEN', {'SYS 612', 'SYS 671', 'SYS 800'}, ]
+        }
+        res = {m: mj.major_info() for m, mj in rep._majors.items()}
         
+        self.assertEqual(expected, res)
+        self.assertNotEqual(unexpected , res)
+  
+
+ 
+    def test_student_pretty_table(self) -> None:
+        """testing student table"""
+        rep: Repository = Repository("/Users/harsh/OneDrive/Desktop/My Files/Assignment")
+        res = list()
+        expected  = [
+            ['10103', 'Baldwin, C', 'SFEN', ['CS 501', 'SSW 564', 'SSW 567', 'SSW 687'], {'SSW 540', 'SSW 555'}, [], 3.44],
+            ['10115', 'Wyatt, X', 'SFEN', ['CS 545', 'SSW 564', 'SSW 567', 'SSW 687'], {'SSW 540', 'SSW 555'}, [], 3.81], 
+            ['10172', 'Forbes, I', 'SFEN', ['SSW 555', 'SSW 567'], {'SSW 540', 'SSW 564'}, {'CS 501', 'CS 513', 'CS 545'}, 3.88], 
+            ['10175', 'Erickson, D', 'SFEN', ['SSW 564', 'SSW 567', 'SSW 687'], {'SSW 540', 'SSW 555'}, {'CS 501', 'CS 513', 'CS 545'}, 3.58], 
+            ['10183', 'Chapman, O', 'SFEN', ['SSW 689'], {'SSW 540', 'SSW 555', 'SSW 564', 'SSW 567'},{'CS 501', 'CS 513', 'CS 545'}, 4.0], 
+            ['11399', 'Cordova, I', 'SYEN', ['SSW 540'], {'SYS 612', 'SYS 671', 'SYS 800'}, [], 3.0], 
+            ['11461', 'Wright, U', 'SYEN', ['SYS 611', 'SYS 750', 'SYS 800'], {'SYS 612', 'SYS 671'}, {'SSW 540', 'SSW 565', 'SSW 810'}, 3.92],
+            ['11658', 'Kelly, P', 'SYEN', [], {'SYS 612', 'SYS 671', 'SYS 800'}, {'SSW 540', 'SSW 565', 'SSW 810'}, 0], 
+            ['11714', 'Morton, A', 'SYEN', ['SYS 611', 'SYS 645'], {'SYS 612', 'SYS 671', 'SYS 800'}, {'SSW 540', 'SSW 565', 'SSW 810'}, 3.0], 
+            ['11788', 'Fuller, E', 'SYEN', ['SSW 540'],{'SYS 612', 'SYS 671', 'SYS 800'}, [], 4.0]]
+
+        unexpected  = [
+            ['10103', 'Baldwin, C', 'SFEN', ['CS 501', 'SSW 564', 'SSW 567', 'SSW 687'], {'SSW 540', 'SSW 555'}, [], 3.44],
+            ['10115', 'Wyatt, X', 'SFEN', ['CS 545', 'SSW 564', 'SSW 567', 'SSW 687'], {'SSW 540', 'SSW 555'}, [], 3.81], 
+            ['10172', 'Forbes, I', 'SFEN', ['SSW 555', 'SSW 567'], {'SSW 540', 'SSW 564'}, {'CS 501', 'CS 513', 'CS 545'}, 3.88], 
+            ['10175', 'Erickson, D', 'SFEN', ['SSW 564', 'SSW 567', 'SSW 687'], {'SSW 540', 'SSW 555'}, {'CS 501', 'CS 513', 'CS 545'}, 3.58], 
+            ['10183', 'Chapman, O', 'SFEN', ['SSW 689'], {'SSW 540', 'SSW 555', 'SSW 564', 'SSW 567'},{'CS 501', 'CS 513', 'CS 545'}, 4.0], 
+            ['11399', 'Cordova, I', 'SYEN', ['SSW 540'], {'SYS 612', 'SYS 671', 'SYS 800'}, [], 3.0], 
+            ['11461', 'Wright, U', 'SYEN', ['SYS 611', 'SYS 750', 'SYS 800'], {'SYS 612', 'SYS 671'}, {'SSW 540', 'SSW 565', 'SSW 810'}, 3.92],
+            ['11658', 'Kelly, P', 'SYEN', [], {'SYS 612', 'SYS 671', 'SYS 800'}, {'SSW 540', 'SSW 565', 'SSW 810'}, 0], 
+            ['11714', 'Morton, A', 'SYEN', ['SYS 611', 'SYS 645'], {'SYS 612', 'SYS 671', 'SYS 800'}, {'SSW 540', 'SSW 565', 'SSW 810'}, 3.0], 
+            ]
+       
+        
+        for  cwid , student in rep._students.items():
+            res.append(student.student_info())
+            
+        self.assertEqual(expected, res)
+        self.assertNotEqual(unexpected, res)
+
+
     def test_instructor_pretty_table(self):
         """ This function is to test the instructor pretty table output"""
         rep: Repository = Repository("/Users/harsh/OneDrive/Desktop/My Files/Assignment")
@@ -74,10 +97,7 @@ class testFunctions(unittest.TestCase):
         self.assertEqual( res , expected)
         self.assertNotEqual( res , expected1)
 
-        
-
 
 
 if __name__ == "__main__":
     unittest.main(exit=False, verbosity=2)
-
