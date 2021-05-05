@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %} Stevens Repository {% endblock %}
+{% block body %} 
+
+    <h1>{{header}}</h1>
+    <h2>{{table}}</h2>
+    <table border="1">
+        <th>Student</th>
+        <th>CWID</th>
+        <th>Course</th>
+        <th>Grade</th>
+        <th>Instructor</th>
+        {% for student in output %}
+            <tr>
+                <td>{{student.Student}}</td>
+                <td>{{student.CWID}}</td>
+                <td>{{student.Course}}</td>
+                <td>{{student.Grade}}</td>
+                <td>{{student.Instructor}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+{% endblock %}
